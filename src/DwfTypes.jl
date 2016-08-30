@@ -1,0 +1,6 @@
+typealias Hdwf Cint
+
+@enum(EnumFilter,
+  ENUMFILTERALL=0,
+  ENUMFILTEREEXPLORER=1,
+  ENUMFILTERDISCOVERY=2)
