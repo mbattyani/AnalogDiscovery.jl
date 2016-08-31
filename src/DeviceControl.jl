@@ -1,12 +1,4 @@
-#### TODO ####
-# DWFAPI BOOL FDwfDeviceAutoConfigureSet(HDWF hdwf, BOOL fAutoConfigure);
-# DWFAPI BOOL FDwfDeviceAutoConfigureGet(HDWF hdwf, BOOL *pfAutoConfigure);
-# DWFAPI BOOL FDwfDeviceReset(HDWF hdwf);
-# DWFAPI BOOL FDwfDeviceEnableSet(HDWF hdwf, BOOL fEnable);
-# DWFAPI BOOL FDwfDeviceTriggerInfo(HDWF hdwf, int *pfstrigsrc); // use IsBitSet
-# DWFAPI BOOL FDwfDeviceTriggerSet(HDWF hdwf, int idxPin, TRIGSRC trigsrc);
-# DWFAPI BOOL FDwfDeviceTriggerGet(HDWF hdwf, int idxPin, TRIGSRC *ptrigsrc);
-# DWFAPI BOOL FDwfDeviceTriggerPC(HDWF hdwf);
+# Device Control API
 
 function deviceOpen(idxDevice::Int32)
   pHdwf = Ref{Hdwf}(0)
@@ -38,3 +30,13 @@ function deviceCloseAll()
   succ == 0 && error("Error calling FDwfDeviceCloseAll.")
   return nothing
 end
+
+#### TODO ####
+# DWFAPI BOOL FDwfDeviceAutoConfigureSet(HDWF hdwf, BOOL fAutoConfigure);
+# DWFAPI BOOL FDwfDeviceAutoConfigureGet(HDWF hdwf, BOOL *pfAutoConfigure);
+# DWFAPI BOOL FDwfDeviceReset(HDWF hdwf);
+# DWFAPI BOOL FDwfDeviceEnableSet(HDWF hdwf, BOOL fEnable);
+# DWFAPI BOOL FDwfDeviceTriggerInfo(HDWF hdwf, int *pfstrigsrc); // use IsBitSet
+# DWFAPI BOOL FDwfDeviceTriggerSet(HDWF hdwf, int idxPin, TRIGSRC trigsrc);
+# DWFAPI BOOL FDwfDeviceTriggerGet(HDWF hdwf, int idxPin, TRIGSRC *ptrigsrc);
+# DWFAPI BOOL FDwfDeviceTriggerPC(HDWF hdwf);
