@@ -15,6 +15,7 @@ for s in instances(ENUMFILTER)
 end
 
 include("DeviceEnumeration.jl")
+include("DeviceControl.jl")
 include("AnalogIn.jl")
 
 end # module
