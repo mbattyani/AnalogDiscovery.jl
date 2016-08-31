@@ -1,5 +1,6 @@
 # Analog In API
 
+#------------------------------------ Control and status
 function analogInReset(hdwf::Hdwf)
   succ = ccall((:FDwfAnalogInReset,libdwf),Cint,(Hdwf,),
     hdwf)
@@ -101,28 +102,112 @@ function analogInRecordLengthGet(hdwf::Hdwf)
   return psLegth[]
 end
 
+#------------------------------------ Acquisition configuration
+function analogInFrequencyInfo(hdwf::Hdwf)
+  phzMin = Ref{Cdouble}(); phzMax = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInFrequencyInfo,libdwf),Cint,(Hdwf,Ptr{Cdouble},Ptr{Cdouble}),
+    hdwf,phzMin,phzMax)
+  succ == 0 && error("Error calling FDwfAnalogInFrequencyInfo.")
+  return (phzMin[],phzMax[])
+end
+
+function analogInFrequencySet(hdwf::Hdwf,hzFrequency::Float64)
+  succ = ccall((:FDwfAnalogInFrequencySet,libdwf),Cint,(Hdwf,Cdouble),
+    hdwf,hzFrequency)
+  succ == 0 && error("Error calling FDwfAnalogInFrequencySet.")
+  return nothing
+end
+
+function analogInFrequencyGet(hdwf::Hdwf)
+  phzFrequency = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInFrequencyGet,libdwf),Cint,(Hdwf,Ptr{Cdouble}),
+    hdwf,phzFrequency)
+  succ == 0 && error("Error calling FDwfAnalogInFrequencyGet.")
+  return phzFrequency[]
+end
+
+function analogInBitsInfo(hdwf::Hdwf)
+  pnBits = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInBitsInfo,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pnBits)
+  succ == 0 && error("Error calling FDwfAnalogInBitsInfo.")
+  return pnBits[]
+end
+
+function analogInBufferSizeInfo(hdwf::Hdwf)
+  pnSizeMin = Ref{Cint}(); pnSizeMax = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInBufferSizeInfo,libdwf),Cint,(Hdwf,Ptr{Cint},Ptr{Cint}),
+    hdwf,pnSizeMin,pnSizeMax)
+  succ == 0 && error("Error calling FDwfAnalogInBufferSizeInfo.")
+  return (pnSizeMin[],pnSizeMax[])
+end
+
+function analogInBufferSizeSet(hdwf::Hdwf,nSize::Int32)
+  succ = ccall((:FDwfAnalogInBufferSizeSet,libdwf),Cint,(Hdwf,Cint),
+    hdwf,nSize)
+  succ == 0 && error("Error calling FDwfAnalogInBufferSizeSet.")
+  return nothing
+end
+
+function analogInBufferSizeGet(hdwf::Hdwf)
+  pnSize = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInBufferSizeGet,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pnSize)
+  succ == 0 && error("Error calling FDwfAnalogInBufferSizeGet.")
+  return pnSize[]
+end
+
+function analogInNoiseSizeInfo(hdwf::Hdwf)
+  pnSizeMax = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInNoiseSizeInfo,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pnSizeMax)
+  succ == 0 && error("Error calling FDwfAnalogInNoiseSizeInfo.")
+  return pnSizeMax[]
+end
+
+function analogInNoiseSizeSet(hdwf::Hdwf,nSize::Int32)
+  succ = ccall((:FDwfAnalogInNoiseSizeSet,libdwf),Cint,(Hdwf,Cint),
+    hdwf,nSize)
+  succ == 0 && error("Error calling FDwfAnalogInNoiseSizeSet.")
+  return nothing
+end
+
+function analogInNoiseSizeGet(hdwf::Hdwf)
+  pnSize = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInNoiseSizeGet,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pnSize)
+  succ == 0 && error("Error calling FDwfAnalogInNoiseSizeGet.")
+  return pnSize[]
+end
+
+function analogInAcquisitionModeInfo(hdwf::Hdwf)
+  pfsacqmode = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInAcquisitionModeInfo,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pfsacqmode)
+  succ == 0 && error("Error calling FDwfAnalogInAcquisitionModeInfo.")
+  return pfsacqmode[]
+end
+
+function analogInAcquisitionModeSet(hdwf::Hdwf,acqmode::ACQMODE)
+  succ = ccall((:FDwfAnalogInAcquisitionModeSet,libdwf),Cint,(Hdwf,Cint),
+    hdwf,Cint(acqmode))
+  succ == 0 && error("Error calling FDwfAnalogInAcquisitionModeSet.")
+  return nothing
+end
+
+function analogInAcquisitionModeGet(hdwf::Hdwf)
+  pacqmode = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInAcquisitionModeGet,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pacqmode)
+  succ == 0 && error("Error calling FDwfAnalogInAcquisitionModeGet.")
+  return ACQMODE(pacqmode[])
+end
+
 #### TODO ####
 # // ANALOG IN INSTRUMENT FUNCTIONS
 # // Control and status:
 #
 # // Acquisition configuration:
-# DWFAPI BOOL FDwfAnalogInFrequencyInfo(HDWF hdwf, double *phzMin, double *phzMax);
-# DWFAPI BOOL FDwfAnalogInFrequencySet(HDWF hdwf, double hzFrequency);
-# DWFAPI BOOL FDwfAnalogInFrequencyGet(HDWF hdwf, double *phzFrequency);
-#
-# DWFAPI BOOL FDwfAnalogInBitsInfo(HDWF hdwf, int *pnBits); // Returns the number of ADC bits
-#
-# DWFAPI BOOL FDwfAnalogInBufferSizeInfo(HDWF hdwf, int *pnSizeMin, int *pnSizeMax);
-# DWFAPI BOOL FDwfAnalogInBufferSizeSet(HDWF hdwf, int nSize);
-# DWFAPI BOOL FDwfAnalogInBufferSizeGet(HDWF hdwf, int *pnSize);
-#
-# DWFAPI BOOL FDwfAnalogInNoiseSizeInfo(HDWF hdwf, int *pnSizeMax);
-# DWFAPI BOOL FDwfAnalogInNoiseSizeSet(HDWF hdwf, int nSize);
-# DWFAPI BOOL FDwfAnalogInNoiseSizeGet(HDWF hdwf, int *pnSize);
-#
-# DWFAPI BOOL FDwfAnalogInAcquisitionModeInfo(HDWF hdwf, int *pfsacqmode); // use IsBitSet
-# DWFAPI BOOL FDwfAnalogInAcquisitionModeSet(HDWF hdwf, ACQMODE acqmode);
-# DWFAPI BOOL FDwfAnalogInAcquisitionModeGet(HDWF hdwf, ACQMODE *pacqmode);
 #
 # // Channel configuration:
 # DWFAPI BOOL FDwfAnalogInChannelCount(HDWF hdwf, int *pcChannel);
