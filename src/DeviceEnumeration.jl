@@ -25,28 +25,48 @@ function enumDeviceIsOpened(idxDevice::Int32)
   return x[]
 end
 
+const dwfStringSize = 32
+
 function enumUserName(idxDevice::Int32)
-  userName = Vector{UInt8}(32)
+  userName = Vector{UInt8}(dwfStringSize)
   succ = ccall((:FDwfEnumUserName,libdwf),Cint,(Cint,Ptr{UInt8}),
     idxDevice,userName)
   succ == 0 && error("Error calling FDwfEnumUserName.")
-  return String(copy(userName))
+  i = 0; found = false
+  @inbounds while !found
+    i += 1
+    i > dwfStringSize && break
+    found = (userName[i] == UInt8(0))
+  end
+  return String(copy(userName[1:i-1]))
 end
 
 function enumDeviceName(idxDevice::Int32)
-  deviceName = Vector{UInt8}(32)
+  deviceName = Vector{UInt8}(dwfStringSize)
   succ = ccall((:FDwfEnumDeviceName,libdwf),Cint,(Cint,Ptr{UInt8}),
     idxDevice,deviceName)
   succ == 0 && error("Error calling FDwfEnumDeviceName.")
-  return String(copy(deviceName))
+  i = 0; found = false
+  @inbounds while !found
+    i += 1
+    i > dwfStringSize && break
+    found = (deviceName[i] == UInt8(0))
+  end
+  return String(copy(deviceName[1:i-1]))
 end
 
 function enumSN(idxDevice::Int32)
-  sn = Vector{UInt8}(32)
+  sn = Vector{UInt8}(dwfStringSize)
   succ = ccall((:FDwfEnumSN,libdwf),Cint,(Cint,Ptr{UInt8}),
     idxDevice,sn)
   succ == 0 && error("Error calling FDwfEnumSN.")
-  return String(copy(sn))
+  i = 0; found = false
+  @inbounds while !found
+    i += 1
+    i > dwfStringSize && break
+    found = (sn[i] == UInt8(0))
+  end
+  return String(copy(sn[1:i-1]))
 end
 
 function enumConfig(idxDevice::Int32)
