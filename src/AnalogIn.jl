@@ -203,6 +203,123 @@ function analogInAcquisitionModeGet(hdwf::Hdwf)
   return ACQMODE(pacqmode[])
 end
 
+#------------------------------------ Channel configuration
+function analogInChannelCount(hdwf::Hdwf)
+  pcChannel = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInChannelCount,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pcChannel)
+  succ == 0 && error("Error calling FDwfAnalogInChannelCount.")
+  return pcChannel[]
+end
+
+function analogInChannelEnableSet(hdwf::Hdwf,idxChannel::Int32,fEnable::Bool)
+  succ = ccall((:FDwfAnalogInChannelEnableSet,libdwf),Cint,(Hdwf,Cint,Cint),
+    hdwf,idxChannel,Cint(fEnable))
+  succ == 0 && error("Error calling FDwfAnalogInChannelEnableSet.")
+  return nothing
+end
+
+function analogInChannelEnableGet(hdwf::Hdwf,idxChannel::Int32)
+  pfEnable = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInChannelEnableGet,libdwf),Cint,(Hdwf,Cint,Ptr{Cint}),
+    hdwf,idxChannel,pfEnable)
+  succ == 0 && error("Error calling FDwfAnalogInChannelEnableGet.")
+  return Bool(pfEnable[])
+end
+
+function analogInChannelFilterInfo(hdwf::Hdwf)
+  pfsfilter = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInChannelFilterInfo,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pfsfilter)
+  succ == 0 && error("Error calling FDwfAnalogInChannelFilterInfo.")
+  return pfsfilter[]
+end
+
+function analogInChannelFilterSet(hdwf::Hdwf,idxChannel::Int32,filter::FILTER)
+  succ = ccall((:FDwfAnalogInChannelFilterSet,libdwf),Cint,(Hdwf,Cint,Cint),
+    hdwf,idxChannel,Cint(filter))
+  succ == 0 && error("Error calling FDwfAnalogInChannelFilterSet.")
+  return nothing
+end
+
+function analogInChannelFilterGet(hdwf::Hdwf,idxChannel::Int32)
+  pfilter = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInChannelFilterGet,libdwf),Cint,(Hdwf,Cint,Ptr{Cint}),
+    hdwf,idxChannel,pfilter)
+  succ == 0 && error("Error calling FDwfAnalogInChannelFilterGet.")
+  return FILTER(pfilter[])
+end
+
+function analogInChannelRangeInfo(hdwf::Hdwf)
+  pvoltsMin = Ref{Cdouble}(); pvoltsMax = Ref{Cdouble}(); pnSteps = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInChannelRangeInfo,libdwf),Cint,(Hdwf,Ptr{Cdouble},Ptr{Cdouble},Ptr{Cdouble}),
+    hdwf,pvoltsMin,pvoltsMax,pnSteps)
+  succ == 0 && error("Error calling FDwfAnalogInChannelRangeInfo.")
+  return (pvoltsMin[],pvoltsMax[],pnSteps[])
+end
+
+function analogInChannelRangeSteps(hdwf::Hdwf)
+  rgVoltsStep = Vector{Float64}(32)
+  pnSteps = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInChannelRangeSteps,libdwf),Cint,(Hdwf,Ptr{Cdouble},Ptr{Cint}),
+    hdwf,rgVoltsStep,pnSteps)
+  succ == 0 && error("Error calling FDwfAnalogInChannelRangeSteps.")
+  return (rgVoltsStep,pnSteps[])
+end
+
+function analogInChannelRangeSet(hdwf::Hdwf,idxChannel::Int32,voltsRange::Float64)
+  succ = ccall((:FDwfAnalogInChannelRangeSet,libdwf),Cint,(Hdwf,Cint,Cdouble),
+    hdwf,idxChannel,voltsRange)
+  succ == 0 && error("Error calling FDwfAnalogInChannelRangeSet.")
+  return nothing
+end
+
+function analogInChannelRangeGet(hdwf::Hdwf,idxChannel::Int32)
+  pvoltsRange = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInChannelRangeGet,libdwf),Cint,(Hdwf,Cint,Ptr{Cdouble}),
+    hdwf,idxChannel,pvoltsRange)
+  succ == 0 && error("Error calling FDwfAnalogInChannelRangeGet.")
+  return pvoltsRange[]
+end
+
+function analogInChannelOffsetInfo(hdwf::Hdwf)
+  pvoltsMin = Ref{Cdouble}(); pvoltsMax = Ref{Cdouble}(); pnSteps = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInChannelOffsetInfo,libdwf),Cint,(Hdwf,Ptr{Cdouble},Ptr{Cdouble},Ptr{Cdouble}),
+    hdwf,pvoltsMin,pvoltsMax,pnSteps)
+  succ == 0 && error("Error calling FDwfAnalogInChannelOffsetInfo.")
+  return (pvoltsMin[],pvoltsMax[],pnSteps[])
+end
+
+function analogInChannelOffsetSet(hdwf::Hdwf,idxChannel::Int32,voltOffset::Float64)
+  succ = ccall((:FDwfAnalogInChannelOffsetSet,libdwf),Cint,(Hdwf,Cint,Cdouble),
+    hdwf,idxChannel,voltOffset)
+  succ == 0 && error("Error calling FDwfAnalogInChannelOffsetSet.")
+  return nothing
+end
+
+function analogInChannelOffsetGet(hdwf::Hdwf,idxChannel::Int32)
+  pvoltOffset = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInChannelOffsetGet,libdwf),Cint,(Hdwf,Cint,Ptr{Cdouble}),
+    hdwf,idxChannel,pvoltOffset)
+  succ == 0 && error("Error calling FDwfAnalogInChannelOffsetGet.")
+  return pvoltOffset[]
+end
+
+function analogInChannelAttenuationSet(hdwf::Hdwf,idxChannel::Int32,xAttenuation::Float64)
+  succ = ccall((:FDwfAnalogInChannelAttenuationSet,libdwf),Cint,(Hdwf,Cint,Cdouble),
+    hdwf,idxChannel,xAttenuation)
+  succ == 0 && error("Error calling FDwfAnalogInChannelAttenuationSet.")
+  return nothing
+end
+
+function analogInChannelAttenuationGet(hdwf::Hdwf,idxChannel::Int32)
+  pxAttenuation = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInChannelAttenuationGet,libdwf),Cint,(Hdwf,Cint,Ptr{Cdouble}),
+    hdwf,idxChannel,pxAttenuation)
+  succ == 0 && error("Error calling FDwfAnalogInChannelAttenuationGet.")
+  return pxAttenuation[]
+end
+
 #### TODO ####
 # // ANALOG IN INSTRUMENT FUNCTIONS
 # // Control and status:
@@ -210,22 +327,6 @@ end
 # // Acquisition configuration:
 #
 # // Channel configuration:
-# DWFAPI BOOL FDwfAnalogInChannelCount(HDWF hdwf, int *pcChannel);
-# DWFAPI BOOL FDwfAnalogInChannelEnableSet(HDWF hdwf, int idxChannel, BOOL fEnable);
-# DWFAPI BOOL FDwfAnalogInChannelEnableGet(HDWF hdwf, int idxChannel, BOOL *pfEnable);
-# DWFAPI BOOL FDwfAnalogInChannelFilterInfo(HDWF hdwf, int *pfsfilter); // use IsBitSet
-# DWFAPI BOOL FDwfAnalogInChannelFilterSet(HDWF hdwf, int idxChannel, FILTER filter);
-# DWFAPI BOOL FDwfAnalogInChannelFilterGet(HDWF hdwf, int idxChannel, FILTER *pfilter);
-# DWFAPI BOOL FDwfAnalogInChannelRangeInfo(HDWF hdwf, double *pvoltsMin, double *pvoltsMax, double *pnSteps);
-# DWFAPI BOOL FDwfAnalogInChannelRangeSteps(HDWF hdwf, double rgVoltsStep[32], int *pnSteps);
-# DWFAPI BOOL FDwfAnalogInChannelRangeSet(HDWF hdwf, int idxChannel, double voltsRange);
-# DWFAPI BOOL FDwfAnalogInChannelRangeGet(HDWF hdwf, int idxChannel, double *pvoltsRange);
-# DWFAPI BOOL FDwfAnalogInChannelOffsetInfo(HDWF hdwf, double *pvoltsMin, double *pvoltsMax, double *pnSteps);
-# DWFAPI BOOL FDwfAnalogInChannelOffsetSet(HDWF hdwf, int idxChannel, double voltOffset);
-# DWFAPI BOOL FDwfAnalogInChannelOffsetGet(HDWF hdwf, int idxChannel, double *pvoltOffset);
-# DWFAPI BOOL FDwfAnalogInChannelAttenuationSet(HDWF hdwf, int idxChannel, double xAttenuation);
-# DWFAPI BOOL FDwfAnalogInChannelAttenuationGet(HDWF hdwf, int idxChannel, double *pxAttenuation);
-#
 #
 # // Trigger configuration:
 # DWFAPI BOOL FDwfAnalogInTriggerSourceInfo(HDWF hdwf, int *pfstrigsrc); // use IsBitSet
