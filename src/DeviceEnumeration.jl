@@ -22,7 +22,7 @@ function enumDeviceIsOpened(idxDevice::Int32)
   succ = ccall((:FDwfEnumDeviceIsOpened,libdwf),Cint,(Cint,Ptr{Cint}),
     idxDevice,x)
   succ == 0 && error("Error calling FDwfEnumDeviceIsOpened.")
-  return x[]
+  return Bool(x[])
 end
 
 const dwfStringSize = 32
