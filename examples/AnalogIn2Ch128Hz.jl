@@ -1,6 +1,6 @@
 using AnalogDiscovery
 
-function go()
+function go(fs::Float64)
   cDev = enumDevices()
   @show ("Available",cDev)
   myDev = Int32(0)
@@ -13,9 +13,10 @@ function go()
     error("No devices available.")
   end
 
-  analogInFrequencySet(hdwf,128.0)
+  analogInFrequencySet(hdwf,fs)
   bmin,bmax = analogInBufferSizeInfo(hdwf)
-  analogInBufferSizeSet(hdwf,bmin)
+  bsize = min(Int32(round(fs)),bmax)
+  analogInBufferSizeSet(hdwf,bsize)
   analogInAcquisitionModeSet(hdwf,ACQMODESINGLE)
 
   chVoltMin,chVoltMax,chSteps = analogInChannelRangeInfo(hdwf)
@@ -23,12 +24,12 @@ function go()
   for ch in Int32(0):Int32(chCount-1)
     analogInChannelEnableSet(hdwf,ch,true)
     analogInChannelFilterSet(hdwf,ch,FILTERAVERAGE)
-    analogInChannelRangeSet(hdwf,ch,chVoltMin)
+    analogInChannelRangeSet(hdwf,ch,chVoltMax)
   end
 
   # Collect 10-sec worth of data from all channels
-  blks = Int(ceil(1280.0/bmin))
-  chData = [Vector{Float64}(blks*bmin) for i in 1:chCount]
+  blks = Int(ceil(10*fs/bsize))
+  chData = [Vector{Float64}(blks*bsize) for i in 1:chCount]
 
   for b in 1:blks
     analogInConfigure(hdwf,false,true) # start a single acquistion
@@ -36,10 +37,10 @@ function go()
       sleep(0.001)
     end
 
-    chDataBuf = Vector{Float64}(bmin)
+    chDataBuf = Vector{Float64}(bsize)
     for ch in Int32(0):Int32(chCount-1)
       analogInStatusData!(chDataBuf,hdwf,ch)
-      chData[ch+1][(b-1)*bmin+(1:bmin)] = chDataBuf[:]
+      chData[ch+1][(b-1)*bsize+(1:bsize)] = chDataBuf[:]
       #showall(chDataBuf)
     end
   end
@@ -48,4 +49,5 @@ function go()
   return chData
 end
 
-go()
+const fs = 128.0
+chData = go(fs)
