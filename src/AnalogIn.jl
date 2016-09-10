@@ -56,6 +56,14 @@ function analogInStatusAutoTriggered(hdwf::Hdwf)
 end
 
 function analogInStatusData!(rgdVoltData::Vector{Float64},
+    hdwf::Hdwf,idxChannel::Int32,len::Int32)
+  succ = ccall((:FDwfAnalogInStatusData,libdwf),Cint,(Hdwf,Cint,Ptr{Cdouble},Cint),
+    hdwf,idxChannel,rgdVoltData,len)
+  succ == 0 && error("Error calling FDwfAnalogInStatusData.")
+  return rgdVoltData
+end
+
+function analogInStatusData!(rgdVoltData::Vector{Float64},
     hdwf::Hdwf,idxChannel::Int32)
   succ = ccall((:FDwfAnalogInStatusData,libdwf),Cint,(Hdwf,Cint,Ptr{Cdouble},Cint),
     hdwf,idxChannel,rgdVoltData,Cint(length(rgdVoltData)))
