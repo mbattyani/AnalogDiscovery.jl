@@ -38,6 +38,26 @@ export FILTER
 for s in instances(FILTER)
     @eval export $(Symbol(s))
 end
+export TRIGSRC
+for s in instances(TRIGSRC)
+    @eval export $(Symbol(s))
+end
+export DWFANALOGOUTMODE
+for s in instances(DWFANALOGOUTMODE)
+    @eval export $(Symbol(s))
+end
+export DWFANALOGOUTIDLE
+for s in instances(DWFANALOGOUTIDLE)
+    @eval export $(Symbol(s))
+end
+export ANALOGOUTNODE
+for s in instances(ANALOGOUTNODE)
+    @eval export $(Symbol(s))
+end
+export FUNC
+for s in instances(FUNC)
+    @eval export $(Symbol(s))
+end
 
 include("DeviceEnumeration.jl")
 export enumDevices,
@@ -95,5 +115,60 @@ export analogInReset,
   analogInChannelOffsetGet,
   analogInChannelAttenuationSet,
   analogInChannelAttenuationGet
+include("AnalogOut.jl")
+export analogOutCount,
+  analogOutMasterSet,
+  analogOutMasterGet,
+  analogOutTriggerSourceInfo,
+  analogOutTriggerSourceSet,
+  analogOutTriggerSourceGet,
+  analogOutRunInfo,
+  analogOutRunSet,
+  analogOutRunGet,
+  analogOutRunStatus,
+  analogOutWaitInfo,
+  analogOutWaitSet,
+  analogOutWaitGet,
+  analogOutRepeatInfo,
+  analogOutRepeatSet,
+  analogOutRepeatGet,
+  analogOutRepeatStatus,
+  analogOutRepeatTriggerSet,
+  analogOutRepeatTriggerGet,
+  analogOutModeSet,
+  analogOutModeGet,
+  analogOutIdleInfo,
+  analogOutIdleSet,
+  analogOutIdleGet,
+  analogOutNodeInfo,
+  analogOutNodeEnableSet,
+  analogOutNodeEnableGet,
+  analogOutNodeFunctionInfo,
+  analogOutNodeFunctionSet,
+  analogOutNodeFunctionGet,
+  analogOutNodeFrequencyInfo,
+  analogOutNodeFrequencySet,
+  analogOutNodeFrequencyGet,
+  analogOutNodeAmplitudeInfo,
+  analogOutNodeAmplitudeSet,
+  analogOutNodeAmplitudeGet,
+  analogOutNodeOffsetInfo,
+  analogOutNodeOffsetSet,
+  analogOutNodeOffsetGet,
+  analogOutNodeSymmetryInfo,
+  analogOutNodeSymmetrySet,
+  analogOutNodeSymmetryGet,
+  analogOutNodePhaseInfo,
+  analogOutNodePhaseSet,
+  analogOutNodePhaseGet,
+  analogOutNodeDataInfo,
+  analogOutNodeDataSet,
+  analogOutNodeDataSet,
+  analogOutReset,
+  analogOutConfigure,
+  analogOutStatus,
+  analogOutNodePlayStatus,
+  analogOutNodePlayData,
+  analogOutNodePlayData
 
 end # module
