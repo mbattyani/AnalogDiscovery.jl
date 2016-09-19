@@ -170,5 +170,17 @@ export analogOutCount,
   analogOutNodePlayStatus,
   analogOutNodePlayData,
   analogOutNodePlayData
+include("DigitalIO.jl")
+export digitalIOReset,
+  digitalIOConfigure,
+  digitalIOStatus,
+  digitalIOOutputEnableInfo,
+  digitalIOOutputEnableSet,
+  digitalIOOutputEnableGet,
+  digitalIOOutputInfo,
+  digitalIOOutputSet,
+  digitalIOOutputGet,
+  digitalIOInputInfo,
+  digitalIOInputStatus
 
 end # module
