@@ -9,11 +9,11 @@ function analogOutGatedSineSettings(hdwf::Hdwf,ch::Int32)
 
   analogOutNodeEnableSet(hdwf,ch,ANALOGOUTNODEAM,true)
   analogOutNodeFunctionSet(hdwf,ch,ANALOGOUTNODEAM,FUNCSQUARE)
-  analogOutNodeFrequencySet(hdwf,ch,ANALOGOUTNODEAM,0.5)
+  analogOutNodeFrequencySet(hdwf,ch,ANALOGOUTNODEAM,5.0)
   analogOutNodeAmplitudeSet(hdwf,ch,ANALOGOUTNODEAM,200.0)
   analogOutNodeOffsetSet(hdwf,ch,ANALOGOUTNODEAM,100.0)
 
-  analogOutRunSet(hdwf,ch,1.5)
+  analogOutRunSet(hdwf,ch,0.2)
   analogOutRepeatSet(hdwf,ch,Int32(3))
 end
 
@@ -36,10 +36,10 @@ function go()
   for in in 1:10
     @time begin analogOutNodeFrequencySet(hdwf,ch,ANALOGOUTNODECARRIER,4000.0)
     analogOutConfigure(hdwf,ch,true) end
-    sleep(10.0)
+    sleep(3.0)
     @time begin analogOutNodeFrequencySet(hdwf,ch,ANALOGOUTNODECARRIER,7000.0)
     analogOutConfigure(hdwf,ch,true) end
-    sleep(10.0)
+    sleep(3.0)
   end
 
   deviceClose(hdwf)
