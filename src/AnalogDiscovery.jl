@@ -181,6 +181,7 @@ export digitalIOReset,
   digitalIOOutputSet,
   digitalIOOutputGet,
   digitalIOInputInfo,
-  digitalIOInputStatus
+  digitalIOInputStatus,
+  digitalIOInputStatus!
 
 end # module

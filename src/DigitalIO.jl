@@ -85,3 +85,10 @@ function digitalIOInputStatus(hdwf::Hdwf)
   succ == 0 && error("Error calling FDwfDigitalIOInputStatus.")
   return pfsInput[]
 end
+
+function digitalIOInputStatus!(pfsInput::Ref{Cuint},hdwf::Hdwf)
+  succ = ccall((:FDwfDigitalIOInputStatus,libdwf),Cint,(Hdwf,Ptr{Cuint}),
+    hdwf,pfsInput)
+  succ == 0 && error("Error calling FDwfDigitalIOInputStatus.")
+  return pfsInput[]
+end
