@@ -184,4 +184,8 @@ export digitalIOReset,
   digitalIOInputStatus,
   digitalIOInputStatus!
 
+include("AnalogIO.jl")
+export analogIOChannelNodeSet,
+  analogIOEnableSet
+
 end # module
