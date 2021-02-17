@@ -357,7 +357,7 @@ end
 function analogOutNodeDataSet(
     hdwf::Hdwf,idxChannel::Int32,node::ANALOGOUTNODE,rgdVoltData::Vector{Float64},len::Int32)
   succ = ccall((:FDwfAnalogOutNodeDataSet,libdwf),Cint,(Hdwf,Cint,Cint,Ptr{Cdouble},Cint),
-    hdwf,idxChannel,rgdVoltData,len)
+    hdwf,idxChannel,node, rgdVoltData,len)
   succ == 0 && error("Error calling FDwfAnalogOutNodeDataSet.")
   return rgdVoltData
 end
@@ -365,7 +365,7 @@ end
 function analogOutNodeDataSet(
     hdwf::Hdwf,idxChannel::Int32,node::ANALOGOUTNODE,rgdVoltData::Vector{Float64})
   succ = ccall((:FDwfAnalogOutNodeDataSet,libdwf),Cint,(Hdwf,Cint,Cint,Ptr{Cdouble},Cint),
-    hdwf,idxChannel,rgdVoltData,Cint(length(rgdVoltData)))
+    hdwf,idxChannel,node,rgdVoltData,Cint(length(rgdVoltData)))
   succ == 0 && error("Error calling FDwfAnalogOutNodeDataSet.")
   return rgdVoltData
 end
@@ -404,7 +404,7 @@ end
 function analogOutNodePlayData(
     hdwf::Hdwf,idxChannel::Int32,node::ANALOGOUTNODE,rgdVoltData::Vector{Float64},len::Int32)
   succ = ccall((:FDwfAnalogOutNodePlayData,libdwf),Cint,(Hdwf,Cint,Cint,Ptr{Cdouble},Cint),
-    hdwf,idxChannel,rgdVoltData,len)
+    hdwf,idxChannel,node,rgdVoltData,len)
   succ == 0 && error("Error calling FDwfAnalogOutNodePlayData.")
   return rgdVoltData
 end
@@ -412,7 +412,7 @@ end
 function analogOutNodePlayData(
     hdwf::Hdwf,idxChannel::Int32,node::ANALOGOUTNODE,rgdVoltData::Vector{Float64})
   succ = ccall((:FDwfAnalogOutNodePlayData,libdwf),Cint,(Hdwf,Cint,Cint,Ptr{Cdouble},Cint),
-    hdwf,idxChannel,rgdVoltData,Cint(length(rgdVoltData)))
+    hdwf,idxChannel,node, rgdVoltData,Cint(length(rgdVoltData)))
   succ == 0 && error("Error calling FDwfAnalogOutNodePlayData.")
   return rgdVoltData
 end

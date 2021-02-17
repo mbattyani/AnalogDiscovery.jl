@@ -1,4 +1,4 @@
-typealias Hdwf Cint
+const Hdwf = Cint
 
 @enum(ENUMFILTER,
   ENUMFILTERALL=0,
