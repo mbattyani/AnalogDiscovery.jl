@@ -1,0 +1,4 @@
+name = "AnalogDiscovery"
+uuid = "1130c373-5ad6-4c85-b173-331003fdb59e"
+authors = ["Marc Battyani <marc@battyani.com>"]
+version = "0.1.0"

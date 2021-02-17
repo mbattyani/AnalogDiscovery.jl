@@ -1,11 +1,15 @@
 module AnalogDiscovery
 
-@static if is_unix()
+@static if Sys.isunix()
   const libdwf = Libdl.find_library("libdwf.so")
 end
 
-@static if is_windows()
+@static if Sys.iswindows()
   const libdwf = Libdl.find_library("dwf.dll")
+end
+
+@static if Sys.isapple()
+  const libdwf = find_library("dwf", ["/Library/Frameworks/dwf.framework"])
 end
 
 include("DwfTypes.jl")
