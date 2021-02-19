@@ -353,6 +353,34 @@ function analogInTriggerSourceGet(hdwf::Hdwf)
   return ptrigsrc[]
 end
 
+# DWFAPI BOOL FDwfAnalogInTriggerPositionInfo(HDWF hdwf, double *psecMin, double *psecMax, double *pnSteps);
+function analogInTriggerPositionInfo(hdwf::Hdwf)
+  psecMin = Ref{Cdouble}(); psecMax = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInTriggerPositionInfo,libdwf),Cint,(Hdwf,Ptr{Cdouble},Ptr{Cdouble}),
+    hdwf,psecMin,psecMax)
+  succ == 0 && error("Error calling FDwfAnalogInTriggerPositionInfo.")
+  return (psecMin[],psecMax[])
+end
+
+# DWFAPI BOOL FDwfAnalogInTriggerPositionSet(HDWF hdwf, double secPosition);
+function analogInTriggerPositionSet(hdwf::Hdwf,hzTriggerPosition::Float64)
+  succ = ccall((:FDwfAnalogInTriggerPositionSet,libdwf),Cint,(Hdwf,Cdouble),
+    hdwf,hzTriggerPosition)
+  succ == 0 && error("Error calling FDwfAnalogInTriggerPositionSet.")
+  return nothing
+end
+
+# DWFAPI BOOL FDwfAnalogInTriggerPositionGet(HDWF hdwf, double *psecPosition);
+function analogInTriggerPositionGet(hdwf::Hdwf)
+  psecTriggerPosition = Ref{Cdouble}()
+  succ = ccall((:FDwfAnalogInTriggerPositionGet,libdwf),Cint,(Hdwf,Ptr{Cdouble}),
+    hdwf,psecTriggerPosition)
+  succ == 0 && error("Error calling FDwfAnalogInTriggerPositionGet.")
+  return psecTriggerPosition[]
+end
+
+# DWFAPI BOOL FDwfAnalogInTriggerPositionStatus(HDWF hdwf, double *psecPosition);
+
 
 #### TODO ####
 # // ANALOG IN INSTRUMENT FUNCTIONS
