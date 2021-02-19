@@ -327,6 +327,32 @@ function analogInChannelAttenuationGet(hdwf::Hdwf,idxChannel::Int32)
   succ == 0 && error("Error calling FDwfAnalogInChannelAttenuationGet.")
   return pxAttenuation[]
 end
+# DWFAPI BOOL FDwfAnalogInTriggerSourceInfo(HDWF hdwf, int *pfstrigsrc); // use IsBitSet
+function analogInTriggerSourceInfo(hdwf::Hdwf)
+  pfstrigsrc = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInTriggerSourceInfo,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,pfstrigsrc)
+  succ == 0 && error("Error calling FDwfAnalogInTriggerSourceInfo.")
+  return pfstrigsrc[]
+end
+
+# DWFAPI BOOL FDwfAnalogInTriggerSourceSet(HDWF hdwf, TRIGSRC trigsrc);
+function analogInTriggerSourceSet(hdwf::Hdwf,trigsrc::Int32)
+  succ = ccall((:FDwfAnalogInTriggerSourceSet,libdwf),Cint,(Hdwf,Cint),
+    hdwf,trigsrc)
+  succ == 0 && error("Error calling FDwfAnalogInTriggerSourceSet.")
+  return nothing
+end
+
+# DWFAPI BOOL FDwfAnalogInTriggerSourceGet(HDWF hdwf, TRIGSRC *ptrigsrc);
+function analogInTriggerSourceGet(hdwf::Hdwf)
+  ptrigsrc = Ref{Cint}()
+  succ = ccall((:FDwfAnalogInTriggerSourceGet,libdwf),Cint,(Hdwf,Ptr{Cint}),
+    hdwf,ptrigsrc)
+  succ == 0 && error("Error calling FDwfAnalogInTriggerSourceGet.")
+  return ptrigsrc[]
+end
+
 
 #### TODO ####
 # // ANALOG IN INSTRUMENT FUNCTIONS
@@ -337,9 +363,6 @@ end
 # // Channel configuration:
 #
 # // Trigger configuration:
-# DWFAPI BOOL FDwfAnalogInTriggerSourceInfo(HDWF hdwf, int *pfstrigsrc); // use IsBitSet
-# DWFAPI BOOL FDwfAnalogInTriggerSourceSet(HDWF hdwf, TRIGSRC trigsrc);
-# DWFAPI BOOL FDwfAnalogInTriggerSourceGet(HDWF hdwf, TRIGSRC *ptrigsrc);
 #
 # DWFAPI BOOL FDwfAnalogInTriggerPositionInfo(HDWF hdwf, double *psecMin, double *psecMax, double *pnSteps);
 # DWFAPI BOOL FDwfAnalogInTriggerPositionSet(HDWF hdwf, double secPosition);
